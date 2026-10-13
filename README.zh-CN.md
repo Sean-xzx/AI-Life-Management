@@ -21,7 +21,8 @@
 
 | 证据 | 能说明什么 |
 | --- | --- |
-| 自动化命令行测试 | 记录状态变化、重试、纠正与冲突处理 |
+| 21 项自动化测试 | 记录状态变化、重试、纠正与冲突处理 |
+| Ubuntu 与 Windows CI | 两个平台的测试、项目验证、演示和打包均通过 |
 | 先前十个隔离场景 | 当下回复与文件衔接，不证明长期效果 |
 | 写作场景定向复测 | 用户报告、原因假设与行动建议分别保存 |
 | 核心 SHA-256 清单 | 整理仓库时保留八个原技能文件 |
@@ -30,7 +31,7 @@
 
 ## 环境要求
 
-Python **3.12**；克隆项目需要 Git；不需要第三方 Python 包。已在 **Windows 11 / Python 3.12.14** 本地验证。公共 CI 配置面向 Ubuntu、Windows 与 Python 3.12；有配置不代表远程检查已通过。
+Python **3.12**；克隆项目需要 Git；不需要第三方 Python 包。已在 **Windows 11 / Python 3.12.14** 本地验证。Ubuntu 与 Windows 的 Python 3.12 CI 作业也已通过，见带日期的[验证记录](docs/verification.md)。
 
 命令行演示可离线运行，不需要账户、模型、数据集、GPU 或 API 密钥。对话技能需要兼容的 Codex 环境及其正常账户和模型访问；宿主费用与工具能力不由本项目决定。
 
@@ -105,4 +106,4 @@ docs/                 架构、证据和核心不变校验清单
 
 ## 权利与来源
 
-**保留所有权利，不添加开源许可证。**公开查看不授权使用或修改；GitHub 平台的查看与 fork 权利仍适用。见[权利及来源](RIGHTS.md)、[理论说明](ai-life-management/references/theory.md)和[来源索引](ai-life-management/references/source-index.md)。仓库不包含原访谈媒体或逐字稿文件。
+**保留所有权利，不添加开源许可证。** 公开查看不授权使用或修改；GitHub 平台的查看与 fork 权利仍适用。见[权利及来源](RIGHTS.md)、[理论说明](ai-life-management/references/theory.md)和[来源索引](ai-life-management/references/source-index.md)。仓库不包含原访谈媒体或逐字稿文件。
