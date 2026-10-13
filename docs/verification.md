@@ -18,9 +18,9 @@ Raw conversational traces are deliberately not published: they include local pat
 
 ## Platform and CI / 平台与自动检查
 
-Local baseline: Windows 11, Python 3.12.14, clean virtual environment without system packages. Ubuntu/Windows Python 3.12 jobs are configured using standard GitHub-hosted runners, with no paid runner, artifact upload or cache. Their remote result must be checked after publication; configuration alone is not validation. macOS, other Python versions and real crash/power-loss injection are unverified.
+Local baseline: Windows 11, Python 3.12.14, clean virtual environment without system packages. On 2026-10-13, [CI run 38336649364](https://github.com/Sean-xzx/AI-Life-Management/actions/runs/38336649364) completed successfully for the publication baseline: both Ubuntu and Windows Python 3.12 jobs passed tests, verification, demo and packaging. The workflow uses standard runners with no paid runner, artifact upload or cache. macOS, other Python versions and real crash/power-loss injection are unverified.
 
-本地基线为 Windows 11、Python 3.12.14，不使用系统包的干净虚拟环境。CI 配置 Ubuntu/Windows Python 3.12 标准托管 runner，不使用收费 runner、产物上传或缓存。发布后需另查实际运行状态；配置不等于验证。macOS、其他 Python 版本和真实断电注入未验证。
+本地基线为 Windows 11、Python 3.12.14，不使用系统包的干净虚拟环境。2026-10-13，[CI 运行 38336649364](https://github.com/Sean-xzx/AI-Life-Management/actions/runs/38336649364)在发布基线上成功完成：Ubuntu 与 Windows Python 3.12 作业的测试、验证、演示和打包均通过。采用标准 runner，不使用收费 runner、产物上传或缓存。macOS、其他 Python 版本和真实断电注入未验证。
 
 ## Boundaries / 边界
 
