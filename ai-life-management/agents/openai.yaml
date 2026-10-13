@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI 人生管理"
+  short_description: "用三大理论指导目标、日常行动与复盘，逐步建立可持续的个人管理记录"
+  default_prompt: "使用 $ai-life-management，从我当前最想改善的一件事开始，帮我确定今天可以完成的下一步。"

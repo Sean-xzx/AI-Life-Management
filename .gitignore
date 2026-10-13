@@ -1,0 +1,15 @@
+# Original local work and backups are retained, never published.
+/tmp/
+/output/
+/dist/
+/.venv/
+/life-management/
+/demo-data/
+**/__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,7 @@
+* text=auto eol=lf
+# Preserve original core bytes, including existing mixed line endings.
+ai-life-management/** -text whitespace=cr-at-eol
+*.zip binary
+*.png binary
+*.docx binary
+*.pdf binary
