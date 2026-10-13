@@ -21,7 +21,8 @@ The technical focus is **progressive resource loading, explicit evidence categor
 
 | Evidence | What it establishes |
 | --- | --- |
-| Automated CLI tests | Record transitions, retries, corrections and conflict handling |
+| 21 automated tests | Record transitions, retries, corrections and conflict handling |
+| Ubuntu and Windows CI | Tests, project verification, demo and packaging passed on both runners |
 | Ten earlier isolated scenarios | Immediate replies and file continuity; not long-term effectiveness |
 | Retested writing scenario | User reports, hypotheses and action suggestions were saved separately |
 | Core SHA-256 manifest | The eight original skill files were preserved during repository preparation |
@@ -30,7 +31,7 @@ See [verification and limits](docs/verification.md). No productivity, health or 
 
 ## Requirements
 
-Python **3.12**, Git for cloning, and no third-party Python packages. Local verification used **Windows 11 / Python 3.12.14**. The public CI configuration targets Ubuntu and Windows with Python 3.12; a configuration is not a claim that a remote run has passed.
+Python **3.12**, Git for cloning, and no third-party Python packages. Local verification used **Windows 11 / Python 3.12.14**. Ubuntu and Windows Python 3.12 CI jobs also passed; see the dated [verification record](docs/verification.md).
 
 The command-line demo works offline and needs no account, model, dataset, GPU or API key. Using the conversational skill requires a compatible Codex host and its normal account/model access; host pricing and tool availability are outside this project.
 
