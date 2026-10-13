@@ -2,7 +2,15 @@
 
 # AI 人生管理
 
-一个中文优先的 Codex 技能，把个人目标转化为小行动、可检查的证据与能够衔接的本地记录。
+一个中文优先的人生管理助手：一句提示词开始，把目标变成小行动，用已有证据做简短复盘。
+
+## 一分钟开始
+
+打开[完整启动提示词](ai-life-management-easy/assets/start.txt)，复制全文到能够接受文本对话的 AI 软件，再说：**“我今天只有15分钟，帮我开始。”** 这个入口不需要安装，一次只问一个必要问题。
+
+日常直接说“记一下”“现在做什么”“太难了，缩小一点”“先暂停”“今天结束了”。日报保持五个短模块：今日概览、实际进展、原因分析、明日一步、证据覆盖；结合可访问的全天记录，并说明遗漏。
+
+提示词可跨平台复制，但**没有逐一验证所有模型和软件**。文件衔接、实时系统时间依赖宿主工具；没有工具时只依据当前对话，必要时确认时间。晚上自动推送需要另行配置调度器。
 
 ## 项目价值与贡献
 
@@ -17,11 +25,13 @@
 
 技术重点是**按需加载参考、证据分类、版本检查与追加历史**。项目没有训练新模型，也不宣称科学创新。它辅助日常安排、目标、决定、试验与复盘，不是自动运行的后台服务。
 
+新增日常交互层提供逐步引导、全天上下文导出、时间检查与版本化日报，原八个核心文件未改动。
+
 ## 成果证据
 
 | 证据 | 能说明什么 |
 | --- | --- |
-| 21 项自动化测试 | 记录状态变化、重试、纠正与冲突处理 |
+| 39 项自动化测试 | 核心记录、全天覆盖、日报修订与提醒边界 |
 | Ubuntu 与 Windows CI | 两个平台的测试、项目验证、演示和打包均通过 |
 | 先前十个隔离场景 | 当下回复与文件衔接，不证明长期效果 |
 | 写作场景定向复测 | 用户报告、原因假设与行动建议分别保存 |
@@ -33,7 +43,7 @@
 
 Python **3.12**；克隆项目需要 Git；不需要第三方 Python 包。已在 **Windows 11 / Python 3.12.14** 本地验证。Ubuntu 与 Windows 的 Python 3.12 CI 作业也已通过，见带日期的[验证记录](docs/verification.md)。
 
-命令行演示可离线运行，不需要账户、模型、数据集、GPU 或 API 密钥。对话技能需要兼容的 Codex 环境及其正常账户和模型访问；宿主费用与工具能力不由本项目决定。
+两个命令行演示均可离线运行，不需要账户、模型、数据集、GPU 或 API 密钥。通用提示词需要文本对话宿主；安装技能需要兼容的 Codex 环境；宿主费用与工具能力不由本项目决定。
 
 ## 快速开始
 
@@ -63,6 +73,7 @@ python -m venv --without-pip .venv
 python -m unittest discover -s tests -v
 python tools/verify_project.py
 python examples/demo.py
+python examples/daily_demo.py
 python tools/package_skill.py
 ```
 
@@ -77,15 +88,38 @@ python tools/install_skill.py
 安装到 `$CODEX_HOME/skills` 或 `~/.codex/skills`。相同文件可沿用；如果已有安装内容不同，则保留并报告，不覆盖。在兼容宿主中加载技能后，可这样开始：
 
 ```text
-$ai-life-management 我今天只有20分钟，帮我确定下一步。
-$ai-life-management 根据已有记录，做一次每周复盘。
+$ai-life-management-easy 我今天只有20分钟，帮我确定下一步。
+$ai-life-management-easy 根据已有记录，做一次每周复盘。
 ```
 
 直接调用记录助手的方式与事件结构见[记录说明](ai-life-management/references/records.md)。安装只写技能文件，个人资料另行保存。
 
+## 日报与时间
+
+安装工具同时安装日常交互入口与原核心，建议使用 `$ai-life-management-easy`。原入口仍保留。日常交互先读取选定本地日期的完整记录及相关先前背景，再由模型分析；助手验证引用、分类和长度后保存。校验不证明模型推断在语义上正确。
+
+对已有虚构或私人记录执行（私人记录放在 Git 之外）：
+
+```sh
+python ai-life-management-easy/scripts/daily.py clock --offset +08:00
+python ai-life-management-easy/scripts/daily.py context --root ../life-records --date 2026-10-13 --offset +08:00
+python ai-life-management-easy/scripts/daily.py next --root ../life-records --offset +08:00
+```
+
+按[分析协议](ai-life-management-easy/references/interaction.md)将完整上下文交给模型，保存其结构化答复为 `analysis.json`，再执行：
+
+```sh
+python ai-life-management-easy/scripts/daily.py report --root ../life-records --date 2026-10-13 --offset +08:00 --analysis-file analysis.json --write
+```
+
+成功后资料目录出现 `reports/2026-10-13.md` 与 `.json`；补充记录后重做日报，旧版本归档到 `reports/history/`。省略 `--analysis-file` 时明确输出规则预览；空资料库可在聊天中给出日报，但建立真实记录库前不能保存。UTC 偏移默认 +08:00，请明确设置自己的偏移，夏令时变更也需更新。`next` 只在调用时检查用户已接受的到期行动及免打扰偏好，不在后台运行。
+
+新增演示的成功标志为 `events=4, idempotent=True, core_history_unchanged=True, mode=rules`。它验证全天汇总、重复生成与核心日志不变，是**规则预览，不调用模型**。
+
 ## 结构与数据流
 
 ```text
+ai-life-management-easy/ 通用提示词、日常入口、全天上下文与日报助手
 ai-life-management/    技能入口、中文参考、界面信息和记录助手
 examples/             离线的虚构记录生命周期演示
 tests/                可移植的命令行和仓库检查
@@ -107,3 +141,5 @@ docs/                 架构、证据和核心不变校验清单
 ## 权利与来源
 
 **保留所有权利，不添加开源许可证。** 公开查看不授权使用或修改；GitHub 平台的查看与 fork 权利仍适用。见[权利及来源](RIGHTS.md)、[理论说明](ai-life-management/references/theory.md)和[来源索引](ai-life-management/references/source-index.md)。仓库不包含原访谈媒体或逐字稿文件。
+
+日常交互入口负责引导与自然语言，原技能提供理论及记录规则；新增助手读取日志、输出上下文并保存派生日报，不修改核心历史。详见[交互设计、十个示例与交付阶段](docs/interaction-design.md)。

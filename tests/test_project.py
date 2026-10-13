@@ -13,6 +13,8 @@ class ProjectTests(unittest.TestCase):
         r=self.run_script('tools/verify_project.py');self.assertEqual(r.returncode,0,r.stderr)
     def test_demo(self):
         r=self.run_script('examples/demo.py');self.assertEqual(r.returncode,0,r.stderr);self.assertIn('revision=6',r.stdout)
+    def test_daily_demo(self):
+        r=self.run_script('examples/daily_demo.py');self.assertEqual(r.returncode,0,r.stderr);self.assertIn('events=4, idempotent=True',r.stdout)
     def test_package_is_deterministic(self):
         scratch=ROOT/'tmp';scratch.mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=scratch) as f:
@@ -26,6 +28,9 @@ class ProjectTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(dir=scratch) as f:
             self.assertTrue(Path(f).resolve().is_relative_to(scratch.resolve()))
             r=self.run_script('tools/install_skill.py','--directory',f);self.assertEqual(r.returncode,0,r.stderr)
+            adapter=Path(f)/'ai-life-management-easy/scripts/daily.py'
+            clock=subprocess.run([sys.executable,str(adapter),'clock'],capture_output=True,text=True)
+            self.assertEqual(clock.returncode,0,clock.stderr)
             self.assertEqual(self.run_script('tools/install_skill.py','--directory',f).returncode,0)
             p=Path(f)/'ai-life-management/SKILL.md';p.write_text('existing user edit')
             self.assertEqual(self.run_script('tools/install_skill.py','--directory',f).returncode,2)

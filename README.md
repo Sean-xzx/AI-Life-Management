@@ -2,7 +2,15 @@
 
 # AI Life Management
 
-A Chinese-first Codex skill that turns personal goals into small actions, reviewable evidence and continuity across local records.
+A Chinese-first life-management assistant: start with one pasted prompt, turn goals into small actions and review the day using recorded evidence.
+
+## Start in a minute
+
+Open [the complete startup prompt](ai-life-management-easy/assets/start.txt), paste it into a text-chat assistant and say: **“I only have 15 minutes today. Help me get started.”** This entry needs no installation and asks one necessary question at a time.
+
+Say “record this,” “what now?”, “make it smaller,” “pause,” or “end today's session.” Daily reports have five short sections: overview, progress, explanation, tomorrow's next step and evidence coverage. They use the available full-day record and identify gaps.
+
+The prompt is portable text; **every model/software combination has not been tested**. File continuity and live system time require host tools. Without them, the assistant uses the current conversation and confirms time only when needed. Automatic evening delivery requires a separately configured scheduler.
 
 ## Value and project contribution
 
@@ -17,11 +25,13 @@ Project work by **Sean-xzx, with AI assistance**:
 
 The technical focus is **progressive resource loading, explicit evidence categories, revision checks and append-only history**, rather than a new model or a claim of scientific novelty. It supports daily planning, goal work, decisions, experiments and reviews. It is not an autonomous background service.
 
+The new daily interaction layer adds progressive onboarding, complete daily context, time checks and versioned reports; the original eight core files are unchanged.
+
 ## Evidence at a glance
 
 | Evidence | What it establishes |
 | --- | --- |
-| 21 automated tests | Record transitions, retries, corrections and conflict handling |
+| 39 automated tests | Core records, full-day coverage, revisions and reminder boundaries |
 | Ubuntu and Windows CI | Tests, project verification, demo and packaging passed on both runners |
 | Ten earlier isolated scenarios | Immediate replies and file continuity; not long-term effectiveness |
 | Retested writing scenario | User reports, hypotheses and action suggestions were saved separately |
@@ -33,7 +43,7 @@ See [verification and limits](docs/verification.md). No productivity, health or 
 
 Python **3.12**, Git for cloning, and no third-party Python packages. Local verification used **Windows 11 / Python 3.12.14**. Ubuntu and Windows Python 3.12 CI jobs also passed; see the dated [verification record](docs/verification.md).
 
-The command-line demo works offline and needs no account, model, dataset, GPU or API key. Using the conversational skill requires a compatible Codex host and its normal account/model access; host pricing and tool availability are outside this project.
+Both command-line demos work offline and needs no account, model, dataset, GPU or API key. The portable prompt needs a text-chat host; installing the skill needs a compatible Codex host; host pricing and tool availability are outside this project.
 
 ## Quick start
 
@@ -63,6 +73,7 @@ No dependency installation is needed. Run:
 python -m unittest discover -s tests -v
 python tools/verify_project.py
 python examples/demo.py
+python examples/daily_demo.py
 python tools/package_skill.py
 ```
 
@@ -77,15 +88,38 @@ python tools/install_skill.py
 This copies the skill into `$CODEX_HOME/skills` or `~/.codex/skills`. Identical files are accepted; a differing existing installation is left intact and reported. Load the skill in a compatible host and try:
 
 ```text
-$ai-life-management 我今天只有20分钟，帮我确定下一步。
-$ai-life-management 根据已有记录，做一次每周复盘。
+$ai-life-management-easy 我今天只有20分钟，帮我确定下一步。
+$ai-life-management-easy 根据已有记录，做一次每周复盘。
 ```
 
 For a direct helper invocation and event schema, see [the record guide](ai-life-management/references/records.md). Installation writes only skill files; user data is separate.
 
+## Daily reports and time
+
+Installation includes both the easy entry and the original core; use `$ai-life-management-easy` as the everyday entry. The original entry remains available. The adapter exports all events for the selected local date and relevant earlier context. A model interprets that context; the adapter validates references, categories and length before saving. Structural validation does not establish semantic correctness.
+
+For existing synthetic or private records (keep personal data outside Git):
+
+```sh
+python ai-life-management-easy/scripts/daily.py clock --offset +08:00
+python ai-life-management-easy/scripts/daily.py context --root ../life-records --date 2026-10-13 --offset +08:00
+python ai-life-management-easy/scripts/daily.py next --root ../life-records --offset +08:00
+```
+
+Give the complete context to a model using [the analysis protocol](ai-life-management-easy/references/interaction.md), save its structured answer as `analysis.json`, then:
+
+```sh
+python ai-life-management-easy/scripts/daily.py report --root ../life-records --date 2026-10-13 --offset +08:00 --analysis-file analysis.json --write
+```
+
+Success creates `reports/2026-10-13.md` and `.json` under the data root. Regenerate after supplements; previous versions go to `reports/history/`. Omitting `--analysis-file` produces an explicitly labeled rule preview. An empty store can yield a chat report but cannot save before a real record store exists. UTC offset defaults to +08:00; set yours explicitly and update it for daylight-saving changes. `next` checks only accepted due actions and quiet preferences when invoked; it does not run in the background.
+
+The new demo reports `events=4, idempotent=True, core_history_unchanged=True, mode=rules`. It verifies full-day coverage, repeat generation and unchanged core history. It is a **rule preview and does not call a model**.
+
 ## Structure and data flow
 
 ```text
+ai-life-management-easy/ Portable prompt, easy entry, daily context and report adapter
 ai-life-management/    Skill entry, Chinese references, UI metadata, record helper
 examples/             Offline, synthetic record-lifecycle demo
 tests/                Portable CLI and repository checks
@@ -107,3 +141,5 @@ Run the commands above after changes; see [verification](docs/verification.md) f
 ## Rights and sources
 
 **All rights reserved; no open-source license.** Public viewing does not authorize reuse or modification. GitHub's platform viewing/forking rights still apply. See [rights and provenance](RIGHTS.md), [theory](ai-life-management/references/theory.md) and [source index](ai-life-management/references/source-index.md). Original interview media and transcript files are not included.
+
+The easy entry handles onboarding and natural language; the original skill supplies theory and record rules. The adapter reads history, exports context and saves derived reports without changing core history. See [interaction design, ten examples and delivery stages](docs/interaction-design.md).

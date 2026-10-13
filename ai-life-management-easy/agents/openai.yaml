@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI 人生管理 日常交互版"
+  short_description: "一句话开始安排、记录和复盘，按全天已知内容生成简短日报并支持时间感知"
+  default_prompt: "使用 $ai-life-management-easy，从我眼前的一件事开始；今天结束时根据全天记录生成简短日报。"

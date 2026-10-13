@@ -12,7 +12,7 @@ def check():
     for relative,digest in manifest.items():
         p=ROOT/'ai-life-management'/relative
         assert hashlib.sha256(p.read_bytes()).hexdigest()==digest,'Core changed: '+relative
-    docs=[ROOT/'README.md',ROOT/'README.zh-CN.md',ROOT/'RIGHTS.md',*list((ROOT/'docs').glob('*.md')),*list((ROOT/'ai-life-management').rglob('*.md'))]
+    docs=[ROOT/'README.md',ROOT/'README.zh-CN.md',ROOT/'RIGHTS.md',*list((ROOT/'docs').glob('*.md')),*list((ROOT/'ai-life-management').rglob('*.md')),*list((ROOT/'ai-life-management-easy').rglob('*.md'))]
     for p in docs:
         text=p.read_text(encoding='utf-8')
         assert '[TODO:' not in text,'Unfinished scaffold: '+p.name
