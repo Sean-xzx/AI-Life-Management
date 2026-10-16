@@ -112,7 +112,8 @@ class DailyTests(unittest.TestCase):
     def test_excessive_report_and_naive_due_time_are_rejected(self):
         self.seed();a=self.model_analysis();a['overview']['text']='字'*181
         with self.assertRaises(ValueError):daily.validate_analysis(self.context(),a)
-        self.add('action','a-date',goal_id='g-speaking',text='检查',status='planned',category='user_decision',check_at='2026-10-13T09:00:00')
-        with self.assertRaises(ValueError):daily.due_context(self.root,'+08:00','2026-10-13T10:00:00+08:00')
+        # Reject ambiguous new times before they can poison the persisted log.
+        with self.assertRaises(ValueError):
+            self.add('action','a-date',goal_id='g-speaking',text='检查',status='planned',category='user_decision',check_at='2026-10-13T09:00:00')
 
 if __name__=='__main__':unittest.main()

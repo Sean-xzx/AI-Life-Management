@@ -1,4 +1,4 @@
-"""Explicit distribution whitelist; legacy hashes stay authoritative."""
+"""Explicit distribution whitelist, verified against the current release hashes."""
 from pathlib import Path
 import hashlib
 import json
@@ -11,6 +11,7 @@ def files():
     result=[]
     for relative,digest in manifest.items():
         path=ROOT/'ai-life-management'/relative
+        if not path.resolve().is_relative_to((ROOT/'ai-life-management').resolve()):raise ValueError('Manifest path escapes skill')
         if hashlib.sha256(path.read_bytes()).hexdigest()!=digest:raise ValueError('Protected core changed: '+relative)
         result.append(path)
     result.extend(ROOT/'ai-life-management-easy'/p for p in EASY_FILES)

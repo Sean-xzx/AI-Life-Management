@@ -36,4 +36,27 @@ class ProjectTests(unittest.TestCase):
             self.assertEqual(self.run_script('tools/install_skill.py','--directory',f).returncode,2)
             self.assertEqual(p.read_text(),'existing user edit')
 
+    def test_explicit_upgrade_preserves_backup(self):
+        scratch=ROOT/'tmp';scratch.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=scratch) as f:
+            base=Path(f)/'skills';backups=Path(f)/'backups'
+            self.assertEqual(self.run_script('tools/install_skill.py','--directory',base).returncode,0)
+            old=base/'ai-life-management/SKILL.md';old.write_text('old installed version',encoding='utf-8')
+            upgraded=self.run_script('tools/install_skill.py','--directory',base,'--upgrade','--backup-directory',backups)
+            self.assertEqual(upgraded.returncode,0,upgraded.stderr)
+            self.assertEqual(old.read_bytes(),(ROOT/'ai-life-management/SKILL.md').read_bytes())
+            saved=list(backups.glob('*/ai-life-management/SKILL.md'))
+            self.assertEqual(len(saved),1)
+            self.assertEqual(saved[0].read_text(encoding='utf-8'),'old installed version')
+
+    def test_upgrade_refuses_unexpected_custom_files(self):
+        scratch=ROOT/'tmp';scratch.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=scratch) as f:
+            base=Path(f)/'skills'
+            self.assertEqual(self.run_script('tools/install_skill.py','--directory',base).returncode,0)
+            custom=base/'ai-life-management/private-note.txt';custom.write_text('synthetic local edit')
+            result=self.run_script('tools/install_skill.py','--directory',base,'--upgrade')
+            self.assertEqual(result.returncode,2)
+            self.assertEqual(custom.read_text(),'synthetic local edit')
+
 if __name__=='__main__':unittest.main()

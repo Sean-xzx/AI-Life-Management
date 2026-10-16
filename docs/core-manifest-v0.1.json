@@ -1,0 +1,10 @@
+{
+  "SKILL.md": "ec116a85e596395a1f27e0f85d8004f189c29cb6d88bd5e329080961b7736a0f",
+  "agents/openai.yaml": "31ba2ce2bd26e5613f676ece48c4eca24e7fc0072dff4fd37d52377e146820f0",
+  "references/records.md": "695b646f80612c50cdd192c813f02659e043618812a4fc87e1e50b755c3a2115",
+  "references/source-index.md": "62a3b0c7e9589927551704d86721852dd3914108477e7699211faa9da70179fc",
+  "references/templates.md": "c199adfb49fed1b104500c88355802a240a4e744fe5565045fcc482f1ecb99cb",
+  "references/theory.md": "12a427f66bc9bb13a063b775b5c511d01944d8bb7035e3f1840e01d032ea2383",
+  "references/workflows.md": "323078967a76de56ec98dfbf9d7c78a047818e3537fe044a90af38420e6b7dd1",
+  "scripts/life_store.py": "b54d46db1742bdb90815e40453f078ee12c6474900dba29983d2e7a3cb458fe9"
+}

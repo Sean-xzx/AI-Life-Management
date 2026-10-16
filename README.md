@@ -25,17 +25,17 @@ Project work by **Sean-xzx, with AI assistance**:
 
 The technical focus is **progressive resource loading, explicit evidence categories, revision checks and append-only history**, rather than a new model or a claim of scientific novelty. It supports daily planning, goal work, decisions, experiments and reviews. It is not an autonomous background service.
 
-The new daily interaction layer adds progressive onboarding, complete daily context, time checks and versioned reports; the original eight core files are unchanged.
+The new daily interaction layer adds progressive onboarding, complete daily context, time checks and versioned reports; the current core adds correction-aware validation; the original eight-file hash baseline is archived.
 
 ## Evidence at a glance
 
 | Evidence | What it establishes |
 | --- | --- |
-| 39 automated tests | Core records, full-day coverage, revisions and reminder boundaries |
+| Automated regression tests | Core records, full-day coverage, revisions and reminder boundaries |
 | Ubuntu and Windows CI | Tests, project verification, demo and packaging passed on both runners |
 | Ten earlier isolated scenarios | Immediate replies and file continuity; not long-term effectiveness |
 | Retested writing scenario | User reports, hypotheses and action suggestions were saved separately |
-| Core SHA-256 manifest | The eight original skill files were preserved during repository preparation |
+| Core SHA-256 manifest | Current release hashes and the archived original baseline are separately verifiable |
 
 See [verification and limits](docs/verification.md). No productivity, health or investment gains have been measured.
 
@@ -85,7 +85,7 @@ Success means all tests pass, `Project verification passed` appears, the demo en
 python tools/install_skill.py
 ```
 
-This copies the skill into `$CODEX_HOME/skills` or `~/.codex/skills`. Identical files are accepted; a differing existing installation is left intact and reported. Load the skill in a compatible host and try:
+This copies the skill into `$CODEX_HOME/skills` or `~/.codex/skills`. Identical files are accepted; a differing existing installation is left intact and reported. An explicitly requested upgrade uses `--upgrade` and creates backups first. Load the skill in a compatible host and try:
 
 ```text
 $ai-life-management-easy 我今天只有20分钟，帮我确定下一步。
@@ -124,7 +124,7 @@ ai-life-management/    Skill entry, Chinese references, UI metadata, record help
 examples/             Offline, synthetic record-lifecycle demo
 tests/                Portable CLI and repository checks
 tools/                Verification, packaging and non-overwriting installation
-docs/                 Architecture, evidence, unchanged-core manifest
+docs/                 Architecture, evidence, versioned core manifests
 .github/workflows/    Automated checks
 ```
 
@@ -143,3 +143,14 @@ Run the commands above after changes; see [verification](docs/verification.md) f
 **All rights reserved; no open-source license.** Public viewing does not authorize reuse or modification. GitHub's platform viewing/forking rights still apply. See [rights and provenance](RIGHTS.md), [theory](ai-life-management/references/theory.md) and [source index](ai-life-management/references/source-index.md). Original interview media and transcript files are not included.
 
 The easy entry handles onboarding and natural language; the original skill supplies theory and record rules. The adapter reads history, exports context and saves derived reports without changing core history. See [interaction design, ten examples and delivery stages](docs/interaction-design.md).
+
+## Correction-aware reports
+
+The [0.2 reliability upgrade](docs/reliability-upgrade.md) adds read-only legacy date compatibility, declared source-version invalidation and detailed reports with domain-specific action advice. The default stays short. Structured checks do not prove semantic or medical accuracy. Personal records and trial transcripts are excluded from distribution.
+
+```sh
+python tools/install_skill.py --upgrade
+python ai-life-management-easy/scripts/daily.py report --root ../life-records --date 2030-04-03 --offset +08:00 --layout detailed --analysis-file analysis.json --write
+```
+
+Use only an existing authorized record directory and real evidence IDs; the date is illustrative. Upgrade backups are printed by the installer.

@@ -1,8 +1,20 @@
 # Verification and limits / 验证与限制
 
+## 2026-10-16 reliability release / 可靠性改版
+
+Local Windows / Python 3.12 checks: **73 automated tests passed**, including 34 additional regressions for date contracts, legacy replay, declared dependencies, goal changes, readable invalidation, detailed reports, concurrency and backup-before-upgrade. The existing naive-time regression now checks rejection at write time instead of after saving an invalid event. The project verifier and both offline demos pass through the suite.
+
+An independent agent exercised two synthetic multi-turn end-to-end workflows with actual CLI and report files, then a stricter observation-only intake case. It found the journal initially displayed invalidated estimates without a warning; this was fixed and independently retested. This is tool-assisted interpretation and artifact checking, not a blinded spontaneous-response benchmark. Public fixtures contain no personal records or images.
+
+The previously failing real-record date context now loads without rewriting its log or snapshot. Only aggregate results are retained locally; private inputs and outputs are not published. Legacy dates are read as dates, not invented midnight timestamps. New events require ISO dates or explicit-offset instants.
+
+The original eight-file baseline is archived in core-manifest-v0.1.json; core-manifest.json records the intentionally updated nine-file core. The current bundle has 15 explicitly allowed files. Structured evidence checks cannot prove that a model's prose is truthful, medically accurate or causally justified. Records without declared dependencies require manual review.
+
+Remote CI for this release must be checked against its commit; earlier successful runs below establish their dated baselines only.
+
 ## Reproducible checks / 可复现检查
 
-Run the five verification commands in either README. The automated suite invokes the real CLI in isolated temporary directories. It covers empty reads, Unicode, corrections, retries, stale revisions, invalid completion, pause, locks, snapshot conflicts, incomplete logs, custom records and skill-directory protection. The repository verifier checks links, the 42-topic mapping, README command parity and unchanged core hashes. Packaging is repeated and compared byte-for-byte.
+Run the five verification commands in either README. The automated suite invokes the real CLI in isolated temporary directories. It covers empty reads, Unicode, corrections, retries, stale revisions, invalid completion, pause, locks, snapshot conflicts, incomplete logs, custom records and skill-directory protection. The repository verifier checks links, the 42-topic mapping, README command parity and current release hashes. Packaging is repeated and compared byte-for-byte.
 
 按任一 README 的五条命令运行。测试在临时目录调用真实助手，覆盖读取、中文、纠正、重试、版本冲突、无效完成、暂停、锁、快照冲突、不完整日志、自建资料和技能目录保护。仓库验证还检查链接、42项映射、中英文命令一致性和核心哈希。打包重复执行并比较二进制一致性。
 
@@ -24,9 +36,9 @@ Local baseline: Windows 11, Python 3.12.14, clean virtual environment without sy
 
 ## Boundaries / 边界
 
-No silent correction of an inconsistent snapshot. No automatic removal of another writer's lock. No claims of semantic correctness, automatic reminders or cross-device synchronization. The unchanged helper's input guards are not a security sandbox against an adversarial filesystem; use a dedicated, trusted local data directory, and do not use symlinked locations. Keep sensitive records outside Git.
+No silent correction of an inconsistent snapshot. No automatic removal of another writer's lock. No claims of semantic correctness, automatic reminders or cross-device synchronization. The helper's input guards are not a security sandbox against an adversarial filesystem; use a dedicated, trusted local data directory, and do not use symlinked locations. Keep sensitive records outside Git.
 
-不静默修复不一致快照，不自动删除其他写入者的锁，不保证语义正确、后台提醒或跨设备同步。未改动助手的输入防护不是针对恶意文件系统的安全沙箱；请使用独立可信的本地资料目录，避免符号链接路径。敏感记录不进入 Git。
+不静默修复不一致快照，不自动删除其他写入者的锁，不保证语义正确、后台提醒或跨设备同步。助手的输入防护不是针对恶意文件系统的安全沙箱；请使用独立可信的本地资料目录，避免符号链接路径。敏感记录不进入 Git。
 
 ## Daily interaction upgrade / 日常交互升级
 

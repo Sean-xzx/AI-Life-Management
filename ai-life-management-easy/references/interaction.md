@@ -55,9 +55,34 @@
 
 report 检查长度、条数、ID存在、类别与显式目标状态，但不能验证文字是否忠实或因果是否成立。使用者仍需逐项核对，不能把引用ID当科学证明。不提供模型文件时只输出明确标注的规则预览。
 
+## 纠正与详细模式
+
+`context.current_sources`给出每个记录当前事件版本；`historical_only_evidence`包括已被替换或依赖失效的事件。它们不能支持当前概况、进展或建议。若需要比较“早先报告→后来纠正”，放在interpretation中，设置`historical:true`，渲染为历史复盘；不要通过这一标记把旧数值变成现行依据。
+
+`invalidated`需要重算；`untracked_derived`表示没有足够依赖声明，自动检查不保证这些旧记录仍适用。估算引用来源事件的`depends_on`写法见[记录规范](../../ai-life-management/references/records.md)。用户改值后重新计算合计，更新当前计划，而不只在日报末尾再追加一句相反意见。
+
+默认`--layout short`沿用600字符正文预算。用户明确要求完整报告或各方面行动建议时使用`--layout detailed`：单行至多600字符、正文至多8000字符；progress至多16条、interpretation10条、tomorrow6条，可另加至多16条`action_plan`。这些是工具预算，不要求凑满；遵守实际请求范围。
+
+```json
+{
+  "overview":{"text":"截至午后的实际记录与晚间建议分开。","evidence":["e-current"]},
+  "progress":[],
+  "interpretation":[],
+  "tomorrow":[],
+  "action_plan":[
+    {"area":"恢复","text":"按当前精力安排一次短休息，完成后反馈感受。","kind":"suggestion","evidence":["e-current"]},
+    {"area":"学习","text":"在现有空档完成一项小交付并保存。","kind":"suggestion","goal_id":"g-learning","evidence":["e-goal"]}
+  ]
+}
+```
+
+area是至多40字符的领域标签，只用于action_plan；示例ID必须换成实际上下文中的来源。所有模式沿用证据分类与暂停目标限制。日期检查点出现在next的`date_checkpoints`，不冒充具有具体时刻的提醒；未接受的AI建议不催。
+
 ## 保存和修订
 
 report --write 保存到资料目录 reports/YYYY-MM-DD.md 及同名JSON；改变后将旧版本保存在 reports/history。相同内容不重复制造版本。该目录只是派生报告，不回写核心日志或快照；原资料可重生成日报。报告文件和时间工具执行不等于已经配置晚上通知。
+
+写入时同时保护报告与记录版本；存在记录写锁或context已过期时停止，重读并重新分析。不同版式的旧报告仍可核对和归档；手工编辑的内容不能静默覆盖。
 
 ## 十个虚构交互示例
 

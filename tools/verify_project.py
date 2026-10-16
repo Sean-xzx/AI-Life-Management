@@ -8,9 +8,14 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def check():
     manifest=json.loads((ROOT/'docs/core-manifest.json').read_text(encoding='utf-8'))
-    assert len(manifest)==8,'Expected original eight skill files'
+    assert len(manifest)>=8,'Expected a complete versioned core manifest'
+    actual={p.relative_to(ROOT/'ai-life-management').as_posix()
+            for p in (ROOT/'ai-life-management').rglob('*')
+            if p.is_file() and '__pycache__' not in p.parts and p.suffix!='.pyc'}
+    assert actual==set(manifest),'Core files and distribution manifest differ'
     for relative,digest in manifest.items():
         p=ROOT/'ai-life-management'/relative
+        assert p.resolve().is_relative_to((ROOT/'ai-life-management').resolve()),'Manifest path escapes skill'
         assert hashlib.sha256(p.read_bytes()).hexdigest()==digest,'Core changed: '+relative
     docs=[ROOT/'README.md',ROOT/'README.zh-CN.md',ROOT/'RIGHTS.md',*list((ROOT/'docs').glob('*.md')),*list((ROOT/'ai-life-management').rglob('*.md')),*list((ROOT/'ai-life-management-easy').rglob('*.md'))]
     for p in docs:
